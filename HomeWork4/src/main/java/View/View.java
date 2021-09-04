@@ -3,11 +3,17 @@ package View;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class View implements TextConstants, RegexConstants{
+import static View.Constants.TextConstants.*;
+
+public class View{
     static String MESSAGE_BUNDLE_NAME = "Messages";
+    static String INPUT_FIELD_BUNDLE_NAME = "InputField";
+    static String FIELDS_BUNDLE_NAME = "NoteFieldsNames";
     static String REGEX_BUNDLE_NAME = "Regex";
     static Locale currentLocale = new Locale("en");
-    public static ResourceBundle inputBundle = ResourceBundle.getBundle(MESSAGE_BUNDLE_NAME, currentLocale);
+    public static ResourceBundle messagesBundle = ResourceBundle.getBundle(MESSAGE_BUNDLE_NAME, currentLocale);
+    public static ResourceBundle inputFieldBundle = ResourceBundle.getBundle(INPUT_FIELD_BUNDLE_NAME, currentLocale);
+    public static ResourceBundle fieldsBundle = ResourceBundle.getBundle(FIELDS_BUNDLE_NAME, currentLocale);
     public static ResourceBundle regexBundle = ResourceBundle.getBundle(REGEX_BUNDLE_NAME, currentLocale);
 
     public void changeLanguage()
@@ -17,7 +23,9 @@ public class View implements TextConstants, RegexConstants{
             case "uk" -> currentLocale = new Locale.Builder().setLanguage("en").build();
         }
 
-        inputBundle = ResourceBundle.getBundle(MESSAGE_BUNDLE_NAME, currentLocale);
+        messagesBundle = ResourceBundle.getBundle(MESSAGE_BUNDLE_NAME, currentLocale);
+        inputFieldBundle = ResourceBundle.getBundle(INPUT_FIELD_BUNDLE_NAME, currentLocale);
+        fieldsBundle = ResourceBundle.getBundle(FIELDS_BUNDLE_NAME, currentLocale);
         regexBundle = ResourceBundle.getBundle(REGEX_BUNDLE_NAME, currentLocale);
     }
 
@@ -26,22 +34,27 @@ public class View implements TextConstants, RegexConstants{
         StringBuilder concat = new StringBuilder();
         for(String i: message)
         {
-            concat = concat.append(i);
+            concat.append(i);
         }
         return new String(concat);
     }
 
-    //public void printMessage(String message) { System.out.print(inputBundle.getString(message)); }
+    public static String fieldNameToString(String str)
+    {
+        return fieldsBundle.getString(str);
+    }
+
+    public void printBundleMessage(String message) { System.out.print(messagesBundle.getString(message) + " "); }
 
     public void printMessage(String message) { System.out.print(message); }
 
-    public void printInputMessage(String inputStr, String regexStr)
+    public void printInputMessage(String inputStr)
     {
-        printMessage(concatString(inputBundle.getString(ENTER) + " ", inputBundle.getString(inputStr) + " ", regexBundle.getString(regexStr) + ": "));
+        printMessage(concatString(messagesBundle.getString(ENTER) + " ", inputFieldBundle.getString(inputStr) + " "));
     }
 
     public void printWrongMessage(String message)
     {
-        printMessage(inputBundle.getString(WRONG_INPUT) + " ");
+        printMessage(messagesBundle.getString(WRONG_INPUT) + " ");
     }
 }

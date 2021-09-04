@@ -1,10 +1,15 @@
 package Controller;
 
-import Model.*;
-import View.*;
-
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.*;
+
+import Model.*;
+import View.*;
+import static View.Constants.TextConstants.*;
 
 public class Controller {
     private final Model model;
@@ -21,8 +26,8 @@ public class Controller {
     {
         Scanner sc = new Scanner(System.in);
 
-//        view.printMessage(View.CHANGE_LANGUAGE);
-//        chooseLanguage(sc); //Asking user if he wants to change language
+        view.printBundleMessage(CHANGE_LANGUAGE); //Asking user if he wants to change language
+        chooseLanguage(sc);
 
         setNoteFields(sc);
     }
@@ -42,82 +47,97 @@ public class Controller {
             {
                 break;
             }
-            view.printWrongMessage(View.WRONG_INPUT);
+            view.printWrongMessage(WRONG_INPUT);
         }
     }
 
     void setNoteFields(Scanner sc)
     {
-        String field;
+        String str = "-", name = "-", surname = "-", index = "-", city = "-", street = "-", house = "-", flat = "-";
+        var inputFields = View.inputFieldBundle.keySet().toArray();
+        var fields = View.fieldsBundle.keySet().toArray();
+        var regex = View.regexBundle.keySet().toArray();
 
-        view.printInputMessage(View.SURNAME, View.REGEX_SURNAME);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_SURNAME));
-        model.note.putField(View.inputBundle.getString(View.SURNAME), field);
+        Arrays.sort(inputFields);
+        Arrays.sort(fields);
+        Arrays.sort(regex);
 
-        view.printInputMessage(View.NAME, View.REGEX_NAME);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_NAME));
-        model.note.putField(View.inputBundle.getString(View.NAME), field);
+        for(int i = 0; i <= 20; i++)
+        {
+            String reg = View.regexBundle.getString((String)regex[i]);
+            String fil = View.fieldsBundle.getString((String)fields[i]);
 
-        view.printInputMessage(View.PATRONYMIC, View.REGEX_PATRONYMIC);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_PATRONYMIC));
-        model.note.putField(View.inputBundle.getString(View.PATRONYMIC), field);
+            if(!((String) fields[i]).equals("field.04.surname_n") && !((String) fields[i]).equals("field.18.address"))
+            {
+                view.printInputMessage((String) inputFields[i]);
 
-        view.printInputMessage(View.NICKNAME, View.REGEX_NICKNAME);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_NICKNAME));
-        model.note.putField(View.inputBundle.getString(View.NICKNAME), field);
+                str = inputField(sc, (String) fields[i], reg);
+                model.note.putField(fil, str);
+            }
 
-        view.printInputMessage(View.COMMENT, View.REGEX_COMMENT);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_COMMENT));
-        model.note.putField(View.inputBundle.getString(View.COMMENT), field);
+            switch ((String) fields[i])
+            {
+                case "field.01.surname" ->  surname = str;
+                case "field.02.name" ->  name = str;
+                case "field.04.surname_n" -> model.note.putField(fil, surname + " " + name.charAt(0) + ".");
+                case "field.13.index" ->  index = str;
+                case "field.14.city" ->  city = str;
+                case "field.15.street" ->  street = str;
+                case "field.16.house" ->  house = str;
+                case "field.17.flat" ->  flat = str;
+                case "field.18.address" ->  model.note.putField(fil, index + ", " + city + ", " + street + "str., " + house + ", " + flat);
+            }
 
-        view.printInputMessage(View.GROUP, View.REGEX_GROUP);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_GROUP));
-        model.note.putField(View.inputBundle.getString(View.GROUP), field);
-
-        view.printInputMessage(View.HOME_NUMBER, View.REGEX_HOME_NUMBER);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_HOME_NUMBER));
-        model.note.putField(View.inputBundle.getString(View.HOME_NUMBER), field);
-
-        view.printInputMessage(View.MOBILE_PHONE_1, View.REGEX_MOBILE_PHONE_1);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_MOBILE_PHONE_1));
-        model.note.putField(View.inputBundle.getString(View.MOBILE_PHONE_1), field);
-
-        view.printInputMessage(View.REGEX_MOBILE_PHONE_2, View.REGEX_MOBILE_PHONE_2);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_MOBILE_PHONE_2));
-        model.note.putField(View.inputBundle.getString(View.REGEX_MOBILE_PHONE_2), field);
-
-        view.printInputMessage(View.EMAIL, View.REGEX_EMAIL);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_EMAIL));
-        model.note.putField(View.inputBundle.getString(View.EMAIL), field);
-
-        view.printInputMessage(View.SKYPE, View.REGEX_SKYPE);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_SKYPE));
-        model.note.putField(View.inputBundle.getString(View.SKYPE), field);
-
-        view.printInputMessage(View.ADDRESS, View.REGEX_ADDRESS);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_ADDRESS));
-        model.note.putField(View.inputBundle.getString(View.ADDRESS), field);
-
-        view.printInputMessage(View.INPUT_DATE, View.REGEX_INPUT_DATE);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_INPUT_DATE));
-        model.note.putField(View.inputBundle.getString(View.INPUT_DATE), field);
-
-        view.printInputMessage(View.LAST_CHANGE_DATE, View.REGEX_LAST_CHANGE_DATE);
-        field = inputField(sc, View.regexBundle.getString(View.REGEX_LAST_CHANGE_DATE));
-        model.note.putField(View.inputBundle.getString(View.LAST_CHANGE_DATE), field);
+        }
     }
 
-    String inputField(Scanner sc, String regex)
+    String inputField(Scanner sc, String field, String regex)
     {
         String str = sc.next();
+
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher  = pattern.matcher(str);
-        while(!matcher.matches())
+
+        switch (field)
         {
-            view.printWrongMessage(View.WRONG_INPUT);
-            str = sc.next();
-            matcher = pattern.matcher(str);
+            case "input.group.data":
+                Groups gr;
+                while(!Groups.contains(str))
+                {
+                    view.printWrongMessage(WRONG_INPUT);
+                    str = sc.nextLine();
+                }
+                break;
+            case "input.lastChangeDate.data":
+            case "input.inputDate.data":
+                while(!matcher.matches() | !isDateValid(str))
+                {
+                    view.printWrongMessage(WRONG_INPUT);
+                    str = sc.nextLine();
+                }
+                break;
+            default:
+                while(!matcher.matches())
+                {
+                    view.printWrongMessage(WRONG_INPUT);
+                    str = sc.next();
+                    matcher = pattern.matcher(str);
+                }
+                break;
         }
         return str;
+    }
+
+    boolean isDateValid(String date)
+    {
+        try {
+            DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+            df.setLenient(false);
+            df.parse(date);
+            return true;
+        } catch (ParseException e)
+        {
+            return false;
+        }
     }
 }
