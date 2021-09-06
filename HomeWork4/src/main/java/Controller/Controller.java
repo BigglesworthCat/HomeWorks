@@ -11,10 +11,22 @@ import Model.*;
 import View.*;
 import static View.Constants.TextConstants.*;
 
+
+/**
+ *
+ * @author Dmytro Kriuchkov
+ * @version 1.3
+ */
+
 public class Controller {
     private final Model model;
     private final View view;
 
+    /**
+     *
+     * @param model - Model object
+     * @param view - View object
+     */
     public Controller(Model model, View view)
     {
         this.model = model;
@@ -27,9 +39,9 @@ public class Controller {
         Scanner sc = new Scanner(System.in);
 
         view.printBundleMessage(CHANGE_LANGUAGE); //Asking user if he wants to change language
-        chooseLanguage(sc);
+        chooseLanguage(sc); //Process of choosing language
 
-        setNoteFields(sc);
+        setNoteFields(sc); //Setting fields in NoteBook object
     }
 
     void chooseLanguage(Scanner sc)
@@ -91,6 +103,7 @@ public class Controller {
         }
     }
 
+    //Input field with matching it with appropriate regex
     String inputField(Scanner sc, String field, String regex)
     {
         String str = sc.next();
@@ -101,7 +114,6 @@ public class Controller {
         switch (field)
         {
             case "input.group.data":
-                Groups gr;
                 while(!Groups.contains(str))
                 {
                     view.printWrongMessage(WRONG_INPUT);
@@ -128,6 +140,7 @@ public class Controller {
         return str;
     }
 
+    //Check if date in parameter is valid using DateFormat class
     boolean isDateValid(String date)
     {
         try {

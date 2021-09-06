@@ -5,6 +5,11 @@ import java.util.ResourceBundle;
 
 import static View.Constants.TextConstants.*;
 
+/**
+ *
+ * @author Dmytro Kriuchkov
+ * @version 1.1
+ */
 public class View{
     static String MESSAGE_BUNDLE_NAME = "Messages";
     static String INPUT_FIELD_BUNDLE_NAME = "InputField";
@@ -16,6 +21,7 @@ public class View{
     public static ResourceBundle fieldsBundle = ResourceBundle.getBundle(FIELDS_BUNDLE_NAME, currentLocale);
     public static ResourceBundle regexBundle = ResourceBundle.getBundle(REGEX_BUNDLE_NAME, currentLocale);
 
+    //Changes current locale in resource bundles
     public void changeLanguage()
     {
         switch (currentLocale.getLanguage()){
@@ -29,6 +35,11 @@ public class View{
         regexBundle = ResourceBundle.getBundle(REGEX_BUNDLE_NAME, currentLocale);
     }
 
+    /**
+     *
+     * @param message - array of strings
+     * @return concat - result of concatenating
+     */
     public String concatString(String... message)
     {
         StringBuilder concat = new StringBuilder();
@@ -39,20 +50,28 @@ public class View{
         return new String(concat);
     }
 
+    /**
+     *
+     * @param str - key from bundle with field's names
+     * @return localized field's name
+     */
     public static String fieldNameToString(String str)
     {
         return fieldsBundle.getString(str);
     }
 
+    //Print localized message from message's bundle
     public void printBundleMessage(String message) { System.out.print(messagesBundle.getString(message) + " "); }
 
     public void printMessage(String message) { System.out.print(message); }
 
+    //Prints localized "Enter field" message
     public void printInputMessage(String inputStr)
     {
         printMessage(concatString(messagesBundle.getString(ENTER) + " ", inputFieldBundle.getString(inputStr) + " "));
     }
 
+    //Print localized "Wrong input" message
     public void printWrongMessage(String message)
     {
         printMessage(messagesBundle.getString(WRONG_INPUT) + " ");
