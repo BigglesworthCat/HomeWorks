@@ -22,17 +22,20 @@ public class View{
     public static ResourceBundle regexBundle = ResourceBundle.getBundle(REGEX_BUNDLE_NAME, currentLocale);
 
     //Changes current locale in resource bundles
-    public void changeLanguage()
+    public void changeLanguage(boolean res)
     {
-        switch (currentLocale.getLanguage()){
-            case "en" -> currentLocale = new Locale.Builder().setLanguage("uk").build();
-            case "uk" -> currentLocale = new Locale.Builder().setLanguage("en").build();
-        }
+        if(res)
+        {
+            switch (currentLocale.getLanguage()){
+                case "en" -> currentLocale = new Locale.Builder().setLanguage("uk").build();
+                case "uk" -> currentLocale = new Locale.Builder().setLanguage("en").build();
+            }
 
-        messagesBundle = ResourceBundle.getBundle(MESSAGE_BUNDLE_NAME, currentLocale);
-        inputFieldBundle = ResourceBundle.getBundle(INPUT_FIELD_BUNDLE_NAME, currentLocale);
-        fieldsBundle = ResourceBundle.getBundle(FIELDS_BUNDLE_NAME, currentLocale);
-        regexBundle = ResourceBundle.getBundle(REGEX_BUNDLE_NAME, currentLocale);
+            messagesBundle = ResourceBundle.getBundle(MESSAGE_BUNDLE_NAME, currentLocale);
+            inputFieldBundle = ResourceBundle.getBundle(INPUT_FIELD_BUNDLE_NAME, currentLocale);
+            fieldsBundle = ResourceBundle.getBundle(FIELDS_BUNDLE_NAME, currentLocale);
+            regexBundle = ResourceBundle.getBundle(REGEX_BUNDLE_NAME, currentLocale);
+        }
     }
 
     /**
