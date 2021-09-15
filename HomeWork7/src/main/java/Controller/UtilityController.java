@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 /**
  * @author Dmytro Kriuchkov
- * @version 1.0
+ * @version 1.1
  */
 
 public class UtilityController {
@@ -64,7 +64,7 @@ public class UtilityController {
 
         for(int i=0; i< subjects.size(); i++)
         {
-            System.out.println(i+1 + ". " + subjects.get(i).getName() + " " + subjects.get(i).getSurname() + " " + subjects.get(i).getSalary());
+            view.printMessage(i+1 + ". " + subjects.get(i).getName() + " " + subjects.get(i).getSurname() + " " + subjects.get(i).getSalary() + "\n");
         }
 
         view.printMessage(View.ENTER_WORKER_NUMBER);
@@ -94,6 +94,25 @@ public class UtilityController {
                 return false;
             }
             view.printMessage(View.WRONG_RECALCULATING);
+        }
+    }
+
+    boolean chooseSorting()
+    {
+        view.printMessage(View.ENTER_SORTING);
+        String res;
+        while (true)
+        {
+            res = scanner.next();
+            if (res.equalsIgnoreCase("Surname"))
+            {
+                return true;
+            }
+            else if(res.equalsIgnoreCase("Hiring"))
+            {
+                return false;
+            }
+            view.printMessage(View.WRONG_SORTING);
         }
     }
 }

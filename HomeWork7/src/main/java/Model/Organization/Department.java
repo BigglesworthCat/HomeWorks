@@ -1,10 +1,11 @@
 package Model.Organization;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * @author Dmytro Kriuchkov
- * @version 1.0
+ * @version 1.1
  */
 public class Department {
     String departmentName;
@@ -97,5 +98,17 @@ public class Department {
             }
         }
         salaries = salaries + additionalSalaries; //New salaries size
+    }
+
+    public void sort(boolean res)
+    {
+        if(res) //Sorting by Surname
+        {
+            manager.getSubject().sort(Comparator.comparing(Worker::getSurname));
+        }
+        else //Sorting by hiring day
+        {
+            manager.getSubject().sort(Comparator.comparing(Worker::getWorkStart));
+        }
     }
 }

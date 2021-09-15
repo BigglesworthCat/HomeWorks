@@ -2,19 +2,17 @@ package Controller;
 
 import Model.*;
 import Model.Organization.Department;
-import Model.Organization.Manager;
 import Model.Organization.Worker;
 import View.*;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 /**
  * @author Dmytro Kriuchkov
- * @version 1.0
+ * @version 1.1
  */
 public class Controller {
     private final Model model;
@@ -32,32 +30,18 @@ public class Controller {
         Scanner scanner = new Scanner(System.in);
         UtilityController utilityController = new UtilityController(scanner, view, model);
 
-        //Creating and pushing workers to array
-        ArrayList<Worker> mass = new ArrayList<>();
-        mass.add(new Worker("Dima", "Kriuchkov", "Oleksandrovich", 800, new GregorianCalendar(2002, Calendar.SEPTEMBER, 17), new GregorianCalendar(2021, Calendar.NOVEMBER, 17)));
-        mass.add(new Worker("Daniil", "Kleshchev", "Mihailovich", 800, new GregorianCalendar(2003, Calendar.APRIL, 18), new GregorianCalendar(2021, Calendar.NOVEMBER, 17)));
-        mass.add(new Worker("Illya", "Ilnistkiy", "Vladislavovich", 800, new GregorianCalendar(2004, Calendar.SEPTEMBER, 19), new GregorianCalendar(2021, Calendar.NOVEMBER, 17)));
-        mass.add(new Worker("Misha", "Shevchenko", "Oleksandrovich", 600, new GregorianCalendar(2005, Calendar.JUNE, 20), new GregorianCalendar(2021, Calendar.NOVEMBER, 17)));
-
-        Manager manager = new Manager("Tymofiy", "Skripko", "Iouriyovytch", 1000, new GregorianCalendar(2001, Calendar.JULY, 21), new GregorianCalendar(20, Calendar.NOVEMBER, 17), mass);
-
-        model.addDepartment(new Department("Central Department", manager));
-
         view.printMessage("--===Deleting and adding workers===--\n");
-
         deleteWorkerInDepartment(utilityController);
         addWorkerToDepartment(utilityController, new Worker("Daniil", "Kleshchev", "Mihailovich", 700, new GregorianCalendar(2003, Calendar.APRIL, 18), new GregorianCalendar(20, Calendar.NOVEMBER, 17)));
 
         view.printMessage("--===Recalculating salaries===--\n");
-
-
         recalculateSalaries(utilityController);
 
         view.printMessage("--===Birthday bonus salaries===--\n");
-
         model.giveBirthdayBonus();
 
-
+        view.printMessage("--===Sorting workers===--\n");
+        sortWorkers(utilityController);
     }
 
     /**
@@ -75,7 +59,7 @@ public class Controller {
     }
 
     /**
-     *With help of UtilityController we choose department where we want to place worker
+     * With help of UtilityController we choose department where we want to place worker
      * @param utilityController - object of UtilityController class
      * @param worker - object of Worker class
      * @see UtilityController#chooseDepartment()
@@ -95,9 +79,7 @@ public class Controller {
      */
     void recalculateSalaries(UtilityController utilityController)
     {
-        ArrayList<Department> departments = model.getDepartments();
-
-        for(Department dep: departments)
+        for(Department dep: model.getDepartments())
         {
             view.printMessage("Department: " + dep.getDepartmentName() + "\n");
 
@@ -105,4 +87,19 @@ public class Controller {
             dep.recalculateSalaries(res);
         }
     }
+
+    /**
+     * With help of UtilityController we choose department where we want to sort worker and choose way of their sorting
+     * @param utilityController - object of UtilityController class
+     * @see UtilityController#chooseDepartment()
+     * @see UtilityController#chooseSorting()
+     * @see Department#sort(boolean)
+     */
+    void sortWorkers(UtilityController utilityController)
+    {
+        int dep_num = utilityController.chooseDepartment(); //Get index of department with which we'll work
+        boolean res = utilityController.chooseSorting(); //Choose way of sorting (by surname or hiring day)
+        model.getDepartments().get(dep_num).sort(res);
+    }
+
 }
