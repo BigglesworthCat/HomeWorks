@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f32f08c-10cf-4ad9-8117-c0501fbd5390" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/HomeWork2.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-    </list>
+    <list default="true" id="7f32f08c-10cf-4ad9-8117-c0501fbd5390" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,6 +51,7 @@
       <workItem from="1630428724885" duration="22000" />
       <workItem from="1630428936534" duration="156000" />
       <workItem from="1630429122177" duration="1287000" />
+      <workItem from="1631959741520" duration="5000" />
     </task>
     <servers />
   </component>
